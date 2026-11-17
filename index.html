@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamHub TV - Smart IPTV Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="tvApp" class="tv-app">
+        <!-- Fullscreen Video Background -->
+        <div id="videoStage" class="video-stage">
+            <video id="videoPlayer" autoplay playsinline></video>
+            <div id="loader" class="tv-loader hidden">
+                <div class="spinner"></div>
+                <p id="loaderText">Connecting to Stream...</p>
+            </div>
+        </div>
+
+        <!-- Top OSD (On-Screen Display) Header -->
+        <header id="topBar" class="tv-topbar">
+            <div class="brand">
+                <i class="fas fa-tv"></i>
+                <span>StreamHub <b>TV</b></span>
+            </div>
+            <div class="tv-clock-group">
+                <span id="proxyBadge" class="badge proxy-on">Proxy: Active</span>
+                <span id="tvClock" class="tv-clock">00:00</span>
+            </div>
+        </header>
+
+        <!-- Left Slide-Out Channel Drawer -->
+        <aside id="channelDrawer" class="tv-drawer">
+            <div class="drawer-header">
+                <select id="playlistSelect" class="tv-focusable" tabindex="0">
+                    <option value="https://iptv-org.github.io/iptv/languages/ben.m3u">Bengali All (100+ Channels)</option>
+                    <option value="https://iptv-org.github.io/iptv/countries/bd.m3u">Bangladesh Channels (IPTV-org)</option>
+                    <option value="https://iptv-org.github.io/iptv/countries/in.m3u">India Channels (IPTV-org)</option>
+                    <option value="https://iptv-org.github.io/iptv/languages/hin.m3u">Hindi Channels (200+)</option>
+                    <option value="https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8">Free-TV Master (Clean)</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/sports.m3u">Sports Channels (Global)</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/news.m3u">News Channels (Global)</option>
+                    <option value="https://iptv-org.github.io/iptv/categories/movies.m3u">Movies Channels (Global)</option>
+                </select>
+                <div class="drawer-tools">
+                    <input type="text" id="searchInput" class="tv-focusable" placeholder="Search channel..." tabindex="0">
+                    <button id="settingsBtn" class="icon-btn tv-focusable" title="Proxy & Custom M3U Settings" tabindex="0">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <div class="drawer-meta">
+                    <span id="channelCount">0 Channels</span>
+                    <span class="hint">↑↓ Scroll • OK Play • ←/→ Hide</span>
+                </div>
+            </div>
+
+            <ul id="channelList" class="tv-channel-list">
+                <!-- Channels injected dynamically -->
+            </ul>
+        </aside>
+
+        <!-- Bottom TV Info Banner (OSD) -->
+        <footer id="infoBanner" class="tv-infobar">
+            <div class="ch-number-box" id="osdChNum">--</div>
+            <img id="osdLogo" src="" alt="" class="osd-logo">
+            <div class="osd-details">
+                <h1 id="osdTitle">Welcome to StreamHub TV</h1>
+                <div class="osd-tags">
+                    <span id="osdGroup" class="tag">Press OK / Enter for Channel List</span>
+                    <span id="osdStatus" class="tag status-live">Ready</span>
+                </div>
+            </div>
+            <div class="osd-controls">
+                <button id="toggleListBtn" class="tv-btn tv-focusable" tabindex="0"><i class="fas fa-list"></i> Channels (OK)</button>
+                <button id="prevChBtn" class="tv-btn tv-focusable" tabindex="0"><i class="fas fa-step-backward"></i> CH-</button>
+                <button id="nextChBtn" class="tv-btn tv-focusable" tabindex="0">CH+ <i class="fas fa-step-forward"></i></button>
+                <button id="muteBtn" class="tv-btn tv-focusable" tabindex="0"><i class="fas fa-volume-up"></i></button>
+                <button id="fullscreenBtn" class="tv-btn tv-focusable" tabindex="0"><i class="fas fa-expand"></i></button>
+            </div>
+        </footer>
+
+        <!-- Settings & Proxy Modal -->
+        <div id="settingsModal" class="tv-modal hidden">
+            <div class="modal-card">
+                <h2><i class="fas fa-server"></i> Proxy & Playlist Settings</h2>
+                
+                <div class="form-group">
+                    <label>Proxy URL (Leave empty for direct / Netlify mode):</label>
+                    <input type="text" id="proxyUrlInput" class="tv-focusable" placeholder="e.g. https://your-worker.workers.dev or leave blank" tabindex="0">
+                    <small>If left blank, streams will load directly or via CORS fallbacks.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Custom M3U Playlist URL:</label>
+                    <input type="text" id="customM3uInput" class="tv-focusable" placeholder="Paste any .m3u or .m3u8 link..." tabindex="0">
+                </div>
+
+                <div class="modal-actions">
+                    <button id="saveSettingsBtn" class="tv-btn primary tv-focusable" tabindex="0">Save & Reload</button>
+                    <button id="closeSettingsBtn" class="tv-btn tv-focusable" tabindex="0">Cancel (ESC)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
